@@ -1,0 +1,39 @@
+{
+    "version": "1.0.0",
+    "name": "backend",
+    "dependencies": {
+        "bcrypt": {
+            "version": "5.1.0"
+        },
+        "cloudinary": {
+            "version": "1.36.4"
+        },
+        "cookie-parser": {
+            "version": "1.4.6"
+        },
+        "cors": {
+            "version": "2.8.5"
+        },
+        "dotenv": {
+            "version": "16.0.3"
+        },
+        "express-fileupload": {
+            "version": "1.4.0"
+        },
+        "express": {
+            "version": "4.18.2"
+        },
+        "jsonwebtoken": {
+            "version": "9.0.0"
+        },
+        "mongoose": {
+            "version": "5.13.17"
+        },
+        "nodemon": {
+            "version": "2.0.22"
+        },
+        "socket.io": {
+            "version": "4.6.1"
+        }
+    }
+}

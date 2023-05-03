@@ -1,21 +1,41 @@
-require('dotenv').config({ path: './config/.env' });
-const mongoose = require('mongoose');
+// Config
+const dotenv = require('dotenv');
+dotenv.config({
+    path: './config/config.env'
+});
+
+const cloudinary = require('cloudinary');
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// App
 const express = require('express');
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 const cors = require('cors');
 const corsOptions = {
     Credential: 'true',
 };
-const cookieParser = require('cookie-parser');
-const socketServer = require('./socketServer');
-
-// App
-const app = express();
-app.use(express.json());
-app.options("*", cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
-app.use(cookieParser());
+
+const fileUpload = require('express-fileupload');
+app.use(
+    fileUpload({
+        useTempFiles: true
+    })
+);
 
 // Socket
+const socketServer = require('./socketServer');
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 io.on('connection', socket => {
@@ -23,6 +43,9 @@ io.on('connection', socket => {
 });
 
 // Routers
+app.get('/', (req, res) => {
+    res.send("Server is working.")
+});
 app.use('/api', require('./routers/adminRouter'));
 app.use('/api', require('./routers/authRouter'));
 app.use('/api', require('./routers/userRouter'));
@@ -31,12 +54,13 @@ app.use('/api', require('./routers/commentRouter'));
 app.use('/api', require('./routers/notificationRouter'));
 
 // Connect to DB
-const URI = process.env.MONGODB_URL;
+const mongoose = require('mongoose');
+const URI = process.env.MONGODB_URI;
 mongoose.connect(URI, {
     useCreateIndex: true,
     useFindAndModify: false,
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
 }, err => {
     if (err) throw err;
     console.log("Successfully connected to MongoDB.");
