@@ -1,6 +1,5 @@
 const Users = require('../models/userModel');
 
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const authCtrl = {
@@ -22,13 +21,11 @@ const authCtrl = {
                     .json({ msg: "This phone number is already registered." });
             }
 
-            const passwordHash = await bcrypt.hash(password, 12);
-
             const newUser = new Users({
                 fullname,
                 emailAddress,
                 phoneNumber,
-                password: passwordHash,
+                password,
                 role,
             });
 
@@ -70,13 +67,11 @@ const authCtrl = {
                     .json({ msg: "This phone number is already registered." });
             }
 
-            const passwordHash = await bcrypt.hash(password, 12);
-
             const newUser = new Users({
                 fullname,
                 emailAddress,
                 phoneNumber,
-                password: passwordHash,
+                password,
                 role: 'admin',
             });
 
@@ -92,17 +87,15 @@ const authCtrl = {
         try {
             const { oldPassword, newPassword } = req.body;
             const user = await Users.findOne({ _id: req.user._id });
-            const isMatch = await bcrypt.compare(oldPassword, user.password);
+            const isMatch = await user.comparePassword(oldPassword);
 
             if (!isMatch) {
                 return res.status(400).json({ msg: "Wrong password." });
             }
 
-            const newPasswordHash = await bcrypt.hash(newPassword, 12);
-
             await Users.findOneAndUpdate(
                 { _id: req.user._id },
-                { password: newPasswordHash }
+                { password: newPassword }
             );
 
             res.json({ msg: "Password updated successfully." })
@@ -121,7 +114,7 @@ const authCtrl = {
                 return res.status(400).json({ msg: "Email address or password is incorrect." });
             }
 
-            const isMatch = await bcrypt.compare(password, user.password);
+            const isMatch = await user.comparePassword(password);
             if (!isMatch) {
                 return res.status(400).json({ msg: "Email address or password is incorrect." });
             }
@@ -154,7 +147,7 @@ const authCtrl = {
                 return res.status(400).json({ msg: "Email address or password is incorrect." });
             }
 
-            const isMatch = await bcrypt.compare(password, user.password);
+            const isMatch = await user.comparePassword(password);
             if (!isMatch) {
                 return res.status(400).json({ msg: "Email address or password is incorrect." });
             }
