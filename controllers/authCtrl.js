@@ -26,7 +26,6 @@ const authCtrl = {
                 emailAddress,
                 phoneNumber,
                 password,
-                role,
             });
 
             const access_token = createAccessToken({ id: newUser._id });
