@@ -86,7 +86,7 @@ const authCtrl = {
     changePassword: async (req, res) => {
         try {
             const { oldPassword, newPassword } = req.body;
-            const user = await Users.findOne({ _id: req.user._id });
+            const user = await Users.findOne({ _id: req.user._id }).select('+password');
             const isMatch = await user.comparePassword(oldPassword);
 
             if (!isMatch) {
@@ -108,7 +108,7 @@ const authCtrl = {
         try {
             const { emailAddress, password } = req.body;
 
-            const user = await Users.findOne({ emailAddress, role: 'user' })
+            const user = await Users.findOne({ emailAddress, role: 'user' }).select('+password')
                 .populate('followers following');
             if (!user) {
                 return res.status(400).json({ msg: "Email address or password is incorrect." });
@@ -142,7 +142,7 @@ const authCtrl = {
         try {
             const { emailAddress, password } = req.body;
 
-            const user = await Users.findOne({ emailAddress, role: 'admin' });
+            const user = await Users.findOne({ emailAddress, role: 'admin' }).select('+password');
             if (!user) {
                 return res.status(400).json({ msg: "Email address or password is incorrect." });
             }
