@@ -131,6 +131,10 @@ const authCtrl = {
             res.json({
                 msg: "Logged in successfully.",
                 access_token,
+                user: {
+                    ...user._doc,
+                    password: "",
+                },
             });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
@@ -163,6 +167,10 @@ const authCtrl = {
             res.json({
                 msg: "Logged in as admin successfully.",
                 access_token,
+                user: {
+                    ...user._doc,
+                    password: "",
+                },
             });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
