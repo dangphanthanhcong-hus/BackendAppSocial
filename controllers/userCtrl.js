@@ -51,7 +51,13 @@ const userCtrl = {
                 return res.status(400).json({ msg: "This user does not exist." });
             }
 
-            res.json({ msg: "Profile updated successfully." });
+            res.json({
+                msg: "Profile updated successfully.",
+                updatedUser: {
+                    ...updatedUser._doc,
+                    password: "",
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -85,7 +91,13 @@ const userCtrl = {
                 return res.status(400).json({ msg: "This user does not exist." });
             }
 
-            res.json({ msg: "Avatar updated successfully." });
+            res.json({
+                msg: "Avatar updated successfully.",
+                updatedUser: {
+                    ...updatedUser._doc,
+                    password: "",
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -113,7 +125,13 @@ const userCtrl = {
                 return res.status(400).json({ msg: "This user does not exist." });
             }
 
-            res.json({ msg: "You are now following this user." });
+            res.json({
+                msg: "You are now following this user.",
+                followedUser: {
+                    ...followedUser._doc,
+                    password: "",
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -131,7 +149,13 @@ const userCtrl = {
                 return res.status(400).json({ msg: "This user does not exist." });
             }
 
-            res.json({ msg: "You are now unfollowing this user." });
+            res.json({
+                msg: "You are now unfollowing this user.",
+                followedUser: {
+                    ...followedUser._doc,
+                    password: "",
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }

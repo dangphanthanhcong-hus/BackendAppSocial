@@ -7,7 +7,7 @@ const notificationCtrl = {
 
             if (receivers.includes(req.user._id.toString())) return;
 
-            const notification = new Notifications({
+            const newNotification = new Notifications({
                 id,
                 sender: req.user._id,
                 receivers,
@@ -17,9 +17,14 @@ const notificationCtrl = {
                 image,
             });
 
-            await notification.save();
+            await newNotification.save();
 
-            res.json({ msg: "Notification created successfully." });
+            res.json({
+                msg: "Notification created successfully.",
+                newNotification: {
+                    ...newNotification._doc,
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -48,7 +53,12 @@ const notificationCtrl = {
                 return res.status(400).json({ msg: "This notification does not exist." });
             }
 
-            res.json({ msg: "Notification was read." });
+            res.json({
+                msg: "Notification was read.",
+                readNotification: {
+                    ...readNotification._doc,
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }

@@ -43,7 +43,13 @@ const postCtrl = {
 
             await newPost.save();
 
-            res.json({ msg: "Post created successfully." });
+            res.json({
+                msg: "Post created successfully.",
+                newPost: {
+                    ...newPost._doc,
+                    user: req.user
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -105,7 +111,13 @@ const postCtrl = {
                 return res.status(400).json({ msg: "This post does not exist." });
             }
 
-            res.json({ msg: "Post updated successfully." });
+            res.json({
+                msg: "Post updated successfully.",
+                updatedPost: {
+                    ...updatedPost._doc,
+                    user: req.user
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -134,7 +146,13 @@ const postCtrl = {
                 return res.status(400).json({ msg: "This post does not exist." });
             }
 
-            res.json({ msg: "Post liked successfully." });
+            res.json({
+                msg: "Post liked successfully.",
+                likedPost: {
+                    ...likedPost._doc,
+                    user: req.user
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -152,7 +170,13 @@ const postCtrl = {
                 return res.status(400).json({ msg: "This post does not exist." });
             }
 
-            res.json({ msg: "Post unliked successfully." });
+            res.json({
+                msg: "Post unliked successfully.",
+                unlikedPost: {
+                    ...unlikedPost._doc,
+                    user: req.user
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }

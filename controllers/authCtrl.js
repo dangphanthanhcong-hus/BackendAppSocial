@@ -42,6 +42,10 @@ const authCtrl = {
             res.json({
                 msg: "Registered successfully.",
                 access_token,
+                newUser: {
+                    ...newUser._doc,
+                    password: "",
+                },
             });
         } catch (err) {
             return res.status(500).json({ msg: err.message });

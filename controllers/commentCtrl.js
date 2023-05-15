@@ -33,7 +33,13 @@ const commentCtrl = {
 
             await newComment.save();
 
-            res.json({ msg: "Comment created successfully." });
+            res.json({
+                msg: "Comment created successfully.",
+                newComment: {
+                    ...newComment._doc,
+                    user: req.user
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -52,7 +58,13 @@ const commentCtrl = {
                 return res.status(400).json({ msg: "This comment does not exist." });
             }
 
-            res.json({ msg: "Comment updated successfully." });
+            res.json({
+                msg: "Comment updated successfully.",
+                updatedComment: {
+                    ...updatedComment._doc,
+                    user: req.user
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -81,7 +93,13 @@ const commentCtrl = {
                 return res.status(400).json({ msg: "This comment does not exist." });
             }
 
-            res.json({ msg: "Comment liked successfully." });
+            res.json({
+                msg: "Comment liked successfully.",
+                likedComment: {
+                    ...likedComment._doc,
+                    user: req.user
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -99,7 +117,13 @@ const commentCtrl = {
                 return res.status(400).json({ msg: "This comment does not exist." });
             }
 
-            res.json({ msg: "Comment unliked successfully." });
+            res.json({
+                msg: "Comment unliked successfully.",
+                unlikedComment: {
+                    ...unlikedComment._doc,
+                    user: req.user
+                }
+            });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
