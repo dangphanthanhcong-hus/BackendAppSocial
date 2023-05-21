@@ -95,6 +95,21 @@ const authCtrl = {
 
             await newUser.save();
 
+            // auto follow
+            await Users.updateMany(
+                {},
+                {
+                    $push: {
+                        following: newUser._id,
+                        followers: newUser._id
+                    }
+                }
+            );
+
+            const newUserUpdated = await Users.findOne(
+                { _id: newUser._id }
+            );
+
             res.json({ msg: "Registered admin successfully." });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
